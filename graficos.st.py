@@ -7,13 +7,12 @@ Created on Fri Mar 31 21:13:55 2023
 
 import pandas as pd
 import plotly.express as px
-#import matplotlib as mpl
-#import matplotlib.pyplot as plt
 import streamlit as st
 
 # Carregando a planilha
 planilha = pd.read_excel('Controle Implantação ES Nova planilha.xlsx', sheet_name='BANCO DE DADOS')
 
+# Dicionario das Colunas
 colunas = {
     'AS-built': 'AS-built validado',
     'Certificação': 'Certificação validada',
@@ -81,24 +80,8 @@ else:
     
 dados_agrupados = grupo_selecionado[coluna_selecionada].value_counts()
 
-#mpl.rcParams['figure.figsize'] = [6, 4] # Define o tamanho da figura
-#mpl.rcParams['font.size'] = 10 # Define o tamanho da fonte
-
-# Criando o gráfico de pizza
-#plt.figure(figsize=(8, 6))
-#fig, ax = plt.subplots()
-#ax.pie(dados_agrupados, labels=dados_agrupados.index, autopct='%1.1f%%')
-
 # Contando a quantidade de vezes que a palavra "ENTREGUE" aparece na coluna "Sites entregue"
 count_entregue = len(grupo_selecionado[grupo_selecionado['Sites entregue'] == 'ENTREGUE'])
-
-# Adicionando o subtítulo ao título do gráfico
-#dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
-#ax.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
-
-# Exibindo o gráfico
-#plt.tight_layout()
-#st.pyplot(fig)
 
 # Criando o gráfico de pizza
 fig = px.pie(dados_agrupados, values=dados_agrupados.values, names=dados_agrupados.index, hole=0.5)
@@ -110,7 +93,7 @@ dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items
 titulo = f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}"
 sub = f"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}"
 
-st.markdown(f"<h4 style='text-align: center;'>{titulo}</h4>", unsafe_allow_html=True)
+st.markdown(f"<h5 style='text-align: center;'>{titulo}</h5>", unsafe_allow_html=True)
 st.markdown(f"<h5 style='text-align: center;'>{sub}</h5>", unsafe_allow_html=True)
 
 
