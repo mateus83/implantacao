@@ -80,8 +80,8 @@ else:
     
 dados_agrupados = grupo_selecionado[coluna_selecionada].value_counts()
 
-mpl.rcParams['figure.figsize'] = [8, 6] # Define o tamanho da figura
-mpl.rcParams['font.size'] = 12 # Define o tamanho da fonte
+mpl.rcParams['figure.figsize'] = [6, 4] # Define o tamanho da figura
+mpl.rcParams['font.size'] = 10 # Define o tamanho da fonte
 
 # Criando o gráfico de pizza
 plt.figure(figsize=(8, 6))
