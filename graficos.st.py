@@ -84,14 +84,8 @@ mpl.rcParams['figure.figsize'] = [6, 4] # Define o tamanho da figura
 mpl.rcParams['font.size'] = 10 # Define o tamanho da fonte
 
 # Criando o gráfico de pizza
-fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(10, 6))
-for i, (item, data) in enumerate(dados_agrupados.items()):
-    row = i // 3
-    col = i % 3
-    axes[row, col].pie(data, labels=data.index, autopct='%1.1f%%')
-    axes[row, col].set_title(item, fontsize=10)
-plt.tight_layout()
-
+fig, ax = plt.subplots()
+ax.pie(dados_agrupados, labels=dados_agrupados.index, autopct='%1.1f%%')
 
 # Contando a quantidade de vezes que a palavra "ENTREGUE" aparece na coluna "Sites entregue"
 count_entregue = len(grupo_selecionado[grupo_selecionado['Sites entregue'] == 'ENTREGUE'])
@@ -100,6 +94,6 @@ count_entregue = len(grupo_selecionado[grupo_selecionado['Sites entregue'] == 'E
 dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
 ax.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
 
+
 # Exibindo o gráfico
-plt.tight_layout()
 st.pyplot(fig)
