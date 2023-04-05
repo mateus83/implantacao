@@ -59,8 +59,7 @@ elif coluna_selecionada == 'Encontrado pendência?':
 else:
     contagem_valores = planilha_filtrada[coluna_selecionada].value_counts()
     titulo = 'Validado x Reprovado'
-    titulo1 = f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} - {titulo} - {mes_ano_selecionado}"
-    sub = f"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}"
+    
 
 # Agrupando os dados por mês e contando a quantidade de vezes que a coluna selecionada contém a palavra "VALIDADO" e "REPROVADO"
 agrupado = planilha_filtrada.groupby('MES_ANO')
@@ -89,6 +88,9 @@ fig = px.pie(dados_agrupados, values=dados_agrupados.values, names=dados_agrupad
 
 # Adicionando o subtítulo ao título do gráfico
 dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
+
+titulo1 = f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} - {titulo} - {mes_ano_selecionado}"
+sub = f"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}"
 
 st.markdown(f"<h4 style='text-align: center;'>{titulo1}</h4>", unsafe_allow_html=True)
 st.markdown(f"<h5 style='text-align: center;'>{sub}</h5>", unsafe_allow_html=True)
