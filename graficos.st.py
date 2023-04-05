@@ -18,7 +18,10 @@ colunas = {
     'Plano de fusão': 'Plano de fusão validado',
     'Plano de Ocupação': 'Plano de Ocupação Validado',
     'Relatorio fotografico L': 'Relatorio fotografico L validado',
-    'Relatorio fotografico F': 'Relatorio fotografico F validado'
+    'Relatorio fotografico F': 'Relatorio fotografico F validado',
+    'Licenciamento': 'Licenciado',
+    'Vistoria Fiscal': 'Fiscalizado',
+    'Pendência': 'Encontrado pendência?'
 }
 
 opcoes_personalizadas = list(colunas.keys())
@@ -27,10 +30,8 @@ opcao_selecionada_personalizada = st.sidebar.selectbox('Selecione a documentaç�
 
 if opcao_selecionada_personalizada != 'Selecione uma opção':
     coluna_selecionada = colunas[opcao_selecionada_personalizada]
-    # fazer alguma ação com a coluna selecionada
 else:
     coluna_selecionada = None
-
 
 # Aplicando filtro na coluna "Sites entregue" por "ENTREGUE"
 planilha_filtrada = planilha[planilha['Sites entregue'] == 'ENTREGUE']
@@ -41,20 +42,45 @@ planilha_filtrada['DATA ENTREGA'] = pd.to_datetime(planilha_filtrada['DATA ENTRE
 # Adicionando uma nova coluna com o mês e o ano no formato de string
 planilha_filtrada['MES_ANO'] = planilha_filtrada['DATA ENTREGA'].dt.strftime('%m/%Y')
 
-# Filtrando apenas as linhas que contêm "VALIDADO" ou "REPROVADO" na coluna selecionada
-planilha_filtrada = planilha_filtrada[planilha_filtrada[coluna_selecionada].isin(['VALIDADO', 'REPROVADO', 'PENDENTE'])]
+
+if coluna_selecionada == 'Licenciado':
+    contagem_valores = planilha_filtrada['Licenciado'].value_counts()
+    titulo = ''
+        
+elif coluna_selecionada == 'Fiscalizado':
+    contagem_valores = planilha_filtrada['Fiscalizado'].value_counts()
+    titulo = 'Vistoria'
+
+elif coluna_selecionada == 'Encontrado pendência?':
+    contagem_valores = planilha_filtrada['Encontrado pendência?'].value_counts()
+    titulo = 'Pendências'
+    
+else:
+    contagem_valores = planilha_filtrada[coluna_selecionada].value_counts()
+    titulo = 'Validado x Reprovado'
+
 
 # Agrupando os dados por mês e contando a quantidade de vezes que a coluna selecionada contém a palavra "VALIDADO" e "REPROVADO"
 agrupado = planilha_filtrada.groupby('MES_ANO')
 
-# Criando a selectbox para selecionar o mês/ano
-mes_ano_selecionado = st.sidebar.selectbox('Selecione o mês/ano', agrupado.groups.keys())
+# Adicionando a opção "todos" na lista de chaves
+opcoes = list(agrupado.groups.keys())
+opcoes.insert(0, "Todos")
 
-# Obtendo os dados filtrados para o mês/ano selecionado
-grupo_selecionado = agrupado.get_group(mes_ano_selecionado)
+# Criando a selectbox para selecionar o mês/ano
+mes_ano_selecionado = st.sidebar.selectbox('Selecione o mês/ano', opcoes)
+
+# Verificando se a opção selecionada é "todos"
+if mes_ano_selecionado == "Todos":
+    grupo_selecionado = planilha_filtrada
+else:
+    # Obtendo os dados filtrados para o mês/ano selecionado
+    grupo_selecionado = agrupado.get_group(mes_ano_selecionado)
+    
 dados_agrupados = grupo_selecionado[coluna_selecionada].value_counts()
 
 # Criando o gráfico de pizza
+plt.figure(figsize=(8, 6))
 fig, ax = plt.subplots()
 ax.pie(dados_agrupados, labels=dados_agrupados.index, autopct='%1.1f%%')
 
@@ -63,11 +89,8 @@ count_entregue = len(grupo_selecionado[grupo_selecionado['Sites entregue'] == 'E
 
 # Adicionando o subtítulo ao título do gráfico
 dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
-ax.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} Validado x Reprovado - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
+ax.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
 
 
 # Exibindo o gráfico
 st.pyplot(fig)
-
-
-
