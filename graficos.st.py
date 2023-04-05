@@ -110,8 +110,9 @@ dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items
 titulo = f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}"
 sub = f"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}"
 
-st.write(titulo)
-st.write(sub)
+st.markdown(f"<h1 style='text-align: center;'>{titulo}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align: center;'>{sub}</h2>", unsafe_allow_html=True)
+
 
 # Exibindo o gráfico
 st.plotly_chart(fig)
