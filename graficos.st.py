@@ -6,6 +6,7 @@ Created on Fri Mar 31 21:13:55 2023
 """
 
 import pandas as pd
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
 
@@ -79,6 +80,9 @@ else:
     
 dados_agrupados = grupo_selecionado[coluna_selecionada].value_counts()
 
+mpl.rcParams['figure.figsize'] = [8, 6] # Define o tamanho da figura
+mpl.rcParams['font.size'] = 12 # Define o tamanho da fonte
+
 # Criando o gráfico de pizza
 plt.figure(figsize=(8, 6))
 fig, ax = plt.subplots()
@@ -92,5 +96,5 @@ dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items
 ax.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
 
 # Exibindo o gráfico
+plt.tight_layout()
 st.pyplot(fig)
-
