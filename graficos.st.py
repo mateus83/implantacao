@@ -105,7 +105,7 @@ fig = px.pie(dados_agrupados, values=dados_agrupados.values, names=dados_agrupad
 
 # Adicionando o subtítulo ao título do gráfico
 dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
-fig.update_layout(title_text=f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}"\n"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", title_font_size=12)
+fig.update_layout(title_text=f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", title_font_size=12)
 
 titulo = f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}"\n"{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}"
 
