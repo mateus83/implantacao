@@ -98,7 +98,7 @@ count_entregue = len(grupo_selecionado[grupo_selecionado['Sites entregue'] == 'E
 
 # Adicionando o subtítulo ao título do gráfico
 dados_agrupados_str = [f"{item[0]}: {item[1]}" for item in dados_agrupados.items()]
-axes.set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
+axes[1, 0].set_title(f"Contagem de {coluna_selecionada.rsplit(' ', 1)[0]} {titulo} - {mes_ano_selecionado}\n{count_entregue} Sites entregue - {' - '.join(dados_agrupados_str)}", fontsize=12)
 
 # Exibindo o gráfico
 plt.tight_layout()
